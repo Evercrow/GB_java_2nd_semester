@@ -8,7 +8,9 @@ public class Run {
         }
         // rbtree.printDepth();
         rbtree.printWidth();
-        LeftSidedRedBlackTree.Node m = rbtree.find(7);
-        // System.out.println(rbtree.findMaxChild(m).value);
+        rbtree.add(18);
+        rbtree.printWidth();
+//        LeftSidedRedBlackTree.Node m = rbtree.find(15);
+//        System.out.println(rbtree.findMaxChild(m).value);
     }
 }

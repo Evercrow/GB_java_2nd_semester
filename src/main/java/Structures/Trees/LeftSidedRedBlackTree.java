@@ -98,19 +98,30 @@ public class LeftSidedRedBlackTree {
 
     public boolean remove(int val){
         if(root != null){
+            if(root.value == val){ // частный случай удаления корня
 
-            boolean success = delNode(root,val);
+                if( root.left == null && root.right == null){
+                    root = null;
+                } else if(root.left != null){
+                    Node maxLeaf = findMaxChild(root.left);
+                    root.value = maxLeaf.value;
+                } else {}
 
-            return success;
+            }
+            return delNode(root,val);
 
         } else {
             return false;
         }
     }
 
+    /**
+     * @param node - вершина ветви поиска, минимальная точка
+     * @return ссылка на узел родителя, у правого ребенка которого лежит максимальное значение относительно входного узла
+     */
     public Node findMaxChild(Node node){
         Node max = node;
-        while(node.right.right != null){
+        if(node.right != null){
             max = findMaxChild(node.right) ;
         }
         return max;
