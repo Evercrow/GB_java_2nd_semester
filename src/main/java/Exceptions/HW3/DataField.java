@@ -45,6 +45,12 @@ class FIO extends DataField{
             throw new BadParseException(this.fieldName);
         }
         values.removeAll(parsedWords);
+
+        if(values.size()>0){
+            System.out.println("Не удалось разобрать следующие поля");
+            System.out.println(values);
+        }
+
         return values;
     }
 
@@ -94,7 +100,7 @@ class PhoneNum extends DataField{
             throw new BadParseException(this.fieldName);
         }
         if(this.fieldValue.length() != 8){
-            throw new BadParseException("Телефонный номер длинной не в 8 цифр", this.fieldName);
+            throw new BadParseException("телефонный номер длинной не в 8 цифр", this.fieldName);
         }
         return values;
     }

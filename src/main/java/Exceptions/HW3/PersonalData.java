@@ -11,13 +11,16 @@ import java.util.Scanner;
 public class PersonalData {
 
     DataField[] data = new DataField[4];
+    public static final String ANSI_RESET = "\033[0m" ;
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\033[0;32m";
 
     /**
      *  прием данных пользователя с консоли
      */
     public void inputData(){
         Scanner in = new Scanner(System.in);
-        System.out.println("Введите ваши данные в строке через пробел формата: 'Фамилия Имя Отчество, датарождения(dd.mm.yyyy) , номертелефона(просто 8 цифр), пол(m/f)':");
+        System.out.println("Введите ваши данные в произвольном порядке через пробел, форматы: 'Фамилия Имя Отчество(первое слово будет названием файла), датарождения(dd.mm.yyyy) , номертелефона(просто 8 цифр), пол(m/f)':");
         String userString = in.nextLine();
         processData(userString);
     }
@@ -39,11 +42,11 @@ public class PersonalData {
         System.out.println(userData);
         int check = checkData(userData);
         if (check == 1){
-            System.out.println("Вы ввели больше данных, чем требуется, работа завершена досрочно");
+            System.out.println(ANSI_RED+ "Вы ввели больше данных, чем требуется, строчка не была записана"+ANSI_RESET);
             return;
         }
         if (check == -1){
-            System.out.println("Вы ввели меньше данных, чем требуется, работа завершена досрочно");
+            System.out.println(ANSI_RED+"Вы ввели меньше данных, чем требуется, строчка не была записана"+ANSI_RESET);
             return;
         }
         data[3] = new Gender();
@@ -58,22 +61,15 @@ public class PersonalData {
             data[0]. parseField(userData);
             saveToFile(data);
         } catch(BadParseException e){
-            e.printStackTrace();
+            System.out.println(ANSI_RED+ e.getMessage()+ANSI_RESET);
+            //e.printStackTrace();
         } catch(IOException e) {
-            System.out.println("Не удалось записать данные в файл");
+            System.out.println(ANSI_RED+"Не удалось записать данные в файл"+ANSI_RESET);
             e.printStackTrace();
         }
 
-        if(userData.size()>0){
-            System.err.println("Не удалось распарсить следующие поля");
-            System.err.println(userData);
-        }
-
-        for (DataField d:data
-             ){
-            System.out.println(d);
-        }
     }
+
 
     /**
      * Приложение должно проверить введенные данные по количеству.
@@ -82,7 +78,7 @@ public class PersonalData {
     private int checkData(List<String> data){
         int size =  data.size();
             if (size == 6){return 0;}
-            else { return size >7 ? 1 : -1;}
+            else { return size >6 ? 1 : -1;}
     }
 
     private void saveToFile(DataField[] data) throws IOException {
@@ -96,6 +92,6 @@ public class PersonalData {
             }
             fw.write("\n");
         }
-
+        System.out.println(ANSI_GREEN+"Запись успешна"+ANSI_RESET);
     }
 }
